@@ -1,5 +1,8 @@
 package Controller;
 
+import Model.Account;
+import Service.AccountService;
+import Service.AccountServiceImpl;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -9,6 +12,14 @@ import io.javalin.http.Context;
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
 public class SocialMediaController {
+    // state 
+    private AccountService accountService;
+
+    public SocialMediaController() {
+        this.accountService = new AccountServiceImpl();
+    }
+
+
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
      * suite must receive a Javalin object from this method.
@@ -17,7 +28,8 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.get("example-endpoint", this::exampleHandler);
-
+        app.post("/accounts", this::addAccountHandler);
+        app.post("/login", this::loginAccountHandler);
         return app;
     }
 
@@ -27,6 +39,33 @@ public class SocialMediaController {
      */
     private void exampleHandler(Context context) {
         context.json("sample text");
+    }
+
+    private void addAccountHandler(Context ctx) {
+        // get request information
+        Account account = ctx.bodyAsClass(Account.class);
+        // call service method
+        Account accountAdded = accountService.addAccount(account);
+        // send result to client
+        if(accountAdded != null) {
+            ctx.json(accountAdded);
+        } else {
+            ctx.status(400);
+        }
+    }
+
+    private void loginAccountHandler (Context ctx) {
+        // get request information
+        Account account = ctx.bodyAsClass(Account.class);
+        // call service method
+        Account accountLogin = accountService.getAccount(account.getUsername(), account.getPassword());
+        // send result to client
+        if(accountLogin != null) {
+            ctx.json(accountLogin);
+        } else {
+            ctx.status(401);
+        }
+
     }
 
 
