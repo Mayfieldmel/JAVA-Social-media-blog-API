@@ -15,7 +15,7 @@ public interface MessageDAO {
     public abstract ArrayList<Message> getAllMessages();
 
     // update
-    public abstract Message updateMessage(Message message);
+    public abstract Message updateMessage(int id, String messageText);
 
     // delete
     public abstract Message deleteMessage(int id);
