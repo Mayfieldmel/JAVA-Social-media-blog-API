@@ -7,6 +7,6 @@ public interface AccountService {
     public abstract Account addAccount(Account account);
 
     // read/ LOGIN
-    public abstract Account geAccount(String username, String password);
+    public abstract Account getAccount(String username, String password);
 
 }
