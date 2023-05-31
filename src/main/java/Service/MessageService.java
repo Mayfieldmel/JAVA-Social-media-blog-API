@@ -19,7 +19,7 @@ public interface MessageService {
     public abstract ArrayList<Message> getAllMessagesByUser(int id);
 
     // Update
-    public abstract Message updateMessage(Message message);
+    public abstract Message updateMessage(int id, String messageText);
 
     // Delete
     public abstract Message deleteMessage(int id);
