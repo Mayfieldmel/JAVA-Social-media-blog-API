@@ -22,9 +22,16 @@ public class AccountServiceImpl implements AccountService {
         
     }
 
+    // login to account
     @Override
     public Account getAccount(String username, String password) {
         return accountDAO.getAccount(username, password);
+    }
+
+    // get account by id
+    @Override
+    public Account getAccountById(int id) {
+        return accountDAO.getAccountById(id);
     }
     
 }
