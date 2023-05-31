@@ -73,7 +73,7 @@ public class AccountDAOImpl implements AccountDAO {
         Connection con = ConnectionUtil.getConnection();
         try {
         // create statement
-        String sql = "SELECT * FROM account WHERE id = ?";
+        String sql = "SELECT * FROM account WHERE account_id = ?";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, id);
 
