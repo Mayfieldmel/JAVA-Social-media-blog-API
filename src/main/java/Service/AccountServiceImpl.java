@@ -9,6 +9,8 @@ import Model.Account;
 public class AccountServiceImpl implements AccountService {
     // state
     private AccountDAO accountDAO;
+    
+    // constructor
     public AccountServiceImpl() {
         this.accountDAO = new AccountDAOImpl();
     }
