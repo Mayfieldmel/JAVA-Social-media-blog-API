@@ -194,13 +194,16 @@ public class SocialMediaController {
         // get request information
         String idString = ctx.pathParam("message_id");
         int id = Integer.parseInt(idString);
-        // call service method
-        Message message = messageService.deleteMessage(id);
-        // send result to client
-        if(message != null) {
-            ctx.json(message);
+        // check if message to be deleted exists
+        Message deletedMessage = messageService.getMessageById(id);
+        if(deletedMessage != null) {
+             // call service method
+            messageService.deleteMessage(id);
+            // send result to client
+            ctx.json(deletedMessage);
         } else {
-            ctx.status(500);
+            ctx.status(200);
+            ctx.json("");
         }
     }
 }
