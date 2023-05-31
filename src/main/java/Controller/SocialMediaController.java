@@ -3,8 +3,11 @@ package Controller;
 import java.util.ArrayList;
 
 import Model.Account;
+import Model.Message;
 import Service.AccountService;
 import Service.AccountServiceImpl;
+import Service.MessageService;
+import Service.MessageServiceImpl;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -16,9 +19,11 @@ import io.javalin.http.Context;
 public class SocialMediaController {
     // state 
     private AccountService accountService;
+    private MessageService messageService;
 
     public SocialMediaController() {
         this.accountService = new AccountServiceImpl();
+        this.messageService = new MessageServiceImpl();
     }
 
 
@@ -30,10 +35,20 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.get("example-endpoint", this::exampleHandler);
+
+        // account handler paths
         app.post("/", this::addAccountHandler);
         app.post("/login", this::loginAccountHandler);
         app.get("/accounts/{account_id}", this::getAccountByIdHandler);
         app.get("/accounts", this::getAllAccountsHandler);
+
+        // message handler paths
+        app.post("/messages", this::addMessageHandler);
+        app.get("/messages", this::getAllMessagesHandler);
+        app.get("/messages/{message_id}", this::getMessageByIdHandler);
+        app.get("/accounts/{account_id}/messages", this::getAllMessagesByUserHandler);
+        app.patch("/messages/{message_id}", this::updateMessageHandler);
+        app.delete("/messages/{message_id}", this::deleteMessageHandler);
         return app;
     }
 
@@ -92,14 +107,99 @@ public class SocialMediaController {
     // get all accounts
     private void getAllAccountsHandler(Context ctx) {
         // call service method
-        ArrayList<Account> account = accountService.getAllAccounts();
+        ArrayList<Account> accounts = accountService.getAllAccounts();
         // send result to client
-        if(account != null) {
-            ctx.json(account);
+        if(accounts != null) {
+            ctx.json(accounts);
         } else {
             ctx.status(400);
         }
     }
 
+    // create message
+    private void addMessageHandler(Context ctx) {
+        // get request information
+        Message message = ctx.bodyAsClass(Message.class);
+        // call service method
+        Message messageAdded = messageService.addMessage(message);
+        // send result to client
+        if (messageAdded != null) {
+            ctx.json(messageAdded);
+        } else {
+            ctx.status(400);
+        }
+    }
 
+    // get all messages
+    private void getAllMessagesHandler(Context ctx) {
+        // call service method
+        ArrayList<Message> messages = messageService.getAllMessages();
+        // send result to client
+        if(messages != null) {
+            ctx.json(messages);
+        } else {
+            ctx.status(500);
+        }
+    }
+
+    // get message by id
+    private void getMessageByIdHandler(Context ctx) {
+        // get request information
+        String idString = ctx.pathParam("message_id");
+        int id = Integer.parseInt(idString);
+        // call service method
+        Message message = messageService.getMessageById(id);
+        // send result to client
+        if(message != null) {
+            ctx.json(message);
+        } else {
+            ctx.status(500);
+        }
+    }
+
+    // get all user messages
+    private void getAllMessagesByUserHandler(Context ctx) {
+        // get request information
+        String idString = ctx.pathParam("account_id");
+        int id = Integer.parseInt(idString);
+        // call service metod
+        ArrayList<Message> userMessages = messageService.getAllMessagesByUser(id);
+        // send results to client
+        if(userMessages != null) {
+            ctx.json(userMessages);
+        } else {
+            ctx.status(500);
+        }
+    }
+
+    // update message text
+    private void updateMessageHandler(Context ctx) {
+        // get request information
+        String messageText = ctx.body();
+        String idString = ctx.pathParam("message_id");
+        int id = Integer.parseInt(idString);
+        // call service method
+        Message message = messageService.updateMessage(id, messageText);
+        // send result to client
+        if(message != null) {
+            ctx.json(message);
+        } else {
+            ctx.status(400);
+        }
+    }
+
+    // delete message
+    private void deleteMessageHandler(Context ctx) {
+        // get request information
+        String idString = ctx.pathParam("message_id");
+        int id = Integer.parseInt(idString);
+        // call service method
+        Message message = messageService.deleteMessage(id);
+        // send result to client
+        if(message != null) {
+            ctx.json(message);
+        } else {
+            ctx.status(500);
+        }
+    }
 }
