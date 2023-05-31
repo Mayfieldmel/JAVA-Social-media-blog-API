@@ -3,22 +3,29 @@ package Service;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import DAO.AccountDAO;
+import DAO.AccountDAOImpl;
 import DAO.MessageDAO;
 import DAO.MessageDAOImpl;
+import Model.Account;
 import Model.Message;
 
 public class MessageServiceImpl implements MessageService {
     // state
     private MessageDAO messageDAO;
+    private AccountDAO accountDAO;
+    
+    // constructor 
     public MessageServiceImpl() {
         this.messageDAO = new MessageDAOImpl();
+        this.accountDAO = new AccountDAOImpl();
     }
 
     // create message
     @Override
     public Message addMessage(Message message) {
-        // add || messageDAO.getAccountById(message.getPosted_by()).isNull
-        if (message.getMessage_text().isBlank() || message.getMessage_text().length() >= 255) { 
+        Account account = accountDAO.getAccountById(message.getPosted_by());
+        if (message.getMessage_text().isBlank() || message.getMessage_text().length() >= 255 || Objects.isNull(account) ) { 
         return null;
         } else  {
        return messageDAO.addMessage(message);
