@@ -30,7 +30,7 @@ public class SocialMediaController {
         app.get("example-endpoint", this::exampleHandler);
         app.post("/", this::addAccountHandler);
         app.post("/login", this::loginAccountHandler);
-        app.post("/account/{account_id}", this::getAccountByIdHandler);
+        app.post("/accounts/{account_id}", this::getAccountByIdHandler);
         return app;
     }
 
