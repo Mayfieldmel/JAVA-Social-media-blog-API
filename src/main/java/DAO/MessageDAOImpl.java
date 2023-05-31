@@ -15,7 +15,7 @@ public class MessageDAOImpl implements MessageDAO {
         try {
         // create a statement
         String sql = "INSERT INTO message VALUES(default, ?, ?, ?)";
-        PreparedStatement ps = con.prepareStatement(sql);
+        PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.setInt(1, message.getPosted_by());
         ps.setString(2, message.getMessage_text());
         ps.setLong(3, message.getTime_posted_epoch());
@@ -24,10 +24,11 @@ public class MessageDAOImpl implements MessageDAO {
         ps.executeUpdate();
         ResultSet rs = ps.getGeneratedKeys();
 
-        // return generated account object
+        // return generated message object
         if(rs.next()) {
             int generated_message_id = (int) rs.getLong(1);
-            return new Message(generated_message_id, message.getPosted_by(), message.getMessage_text(), message.getTime_posted_epoch());
+            Message newMessage = new Message(generated_message_id, message.getPosted_by(), message.getMessage_text(), message.getTime_posted_epoch());
+            return newMessage;
         }
     } catch (SQLException e) {
          // handle exception
@@ -95,7 +96,7 @@ public class MessageDAOImpl implements MessageDAO {
          try {
              // create statement
              String sql = "UPDATE message SET message_text = ? WHERE message_id = ?";
-             PreparedStatement ps = con.prepareStatement(sql);
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
              ps.setString(2, messageText);
              ps.setInt(4, id);
  
@@ -122,7 +123,7 @@ public class MessageDAOImpl implements MessageDAO {
          try {
              // create statement
              String sql = "DELETE FROM message WHERE message_id = ?";
-             PreparedStatement ps = con.prepareStatement(sql);
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
              ps.setInt(1, id);
  
              // execute statement
