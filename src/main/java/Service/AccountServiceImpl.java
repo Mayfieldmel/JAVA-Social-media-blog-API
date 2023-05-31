@@ -1,5 +1,7 @@
 package Service;
 
+import java.util.ArrayList;
+
 import DAO.AccountDAO;
 import DAO.AccountDAOImpl;
 import Model.Account;
@@ -32,6 +34,12 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account getAccountById(int id) {
         return accountDAO.getAccountById(id);
+    }
+
+    // get all accounts
+    @Override
+    public ArrayList<Account> getAllAccounts() {
+        return accountDAO.getAllAccounts();
     }
     
 }

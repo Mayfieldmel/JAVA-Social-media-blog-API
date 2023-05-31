@@ -1,6 +1,7 @@
 package DAO;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import Model.Account;
 import Util.ConnectionUtil;
@@ -79,12 +80,14 @@ public class AccountDAOImpl implements AccountDAO {
 
         // generate result set
         ResultSet rs = ps.executeQuery();
+        
         // process results
         while(rs.next()) {
             int idResult = rs.getInt("account_id");
             String usernameResult = rs.getString("username");
             String passwordResult = rs.getString("password");
-            return new Account(idResult, usernameResult, passwordResult);
+            Account account = new Account(idResult, usernameResult, passwordResult);
+            return account;
         }
 
     } catch (SQLException e) {
@@ -93,5 +96,31 @@ public class AccountDAOImpl implements AccountDAO {
     }
         return null;
        
+    }
+
+    // get all accounts
+    @Override
+    public ArrayList<Account> getAllAccounts() {
+        // open connection
+        Connection con = ConnectionUtil.getConnection();
+        ArrayList<Account> accounts = new ArrayList<>();
+        try {
+            // create statement
+            String sql = "SELECT * FROM account";
+            PreparedStatement ps = con.prepareStatement(sql);
+ 
+             // execute statement
+             ResultSet rs = ps.executeQuery();
+ 
+             // process results
+             while(rs.next()) {
+                Account account = new Account(rs.getInt("account_id"), rs.getString("username"), rs.getString("password"));
+                accounts.add(account);
+             }
+        } catch (Exception e) {
+            /// handle exception
+            System.out.println(e.getMessage());
+        }
+        return accounts;
     }
 }

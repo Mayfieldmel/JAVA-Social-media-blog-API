@@ -1,5 +1,7 @@
 package Service;
 
+import java.util.ArrayList;
+
 import Model.Account;
 
 public interface AccountService {
@@ -11,5 +13,7 @@ public interface AccountService {
     public abstract Account getAccount(String username, String password);
     // get account by id
     public abstract Account getAccountById(int id);
+    // get all accounts
+    public abstract ArrayList<Account> getAllAccounts();
 
 }

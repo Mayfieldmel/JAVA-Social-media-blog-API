@@ -1,5 +1,7 @@
 package Controller;
 
+import java.util.ArrayList;
+
 import Model.Account;
 import Service.AccountService;
 import Service.AccountServiceImpl;
@@ -31,6 +33,7 @@ public class SocialMediaController {
         app.post("/", this::addAccountHandler);
         app.post("/login", this::loginAccountHandler);
         app.get("/accounts/{account_id}", this::getAccountByIdHandler);
+        app.get("/accounts", this::getAllAccountsHandler);
         return app;
     }
 
@@ -42,6 +45,7 @@ public class SocialMediaController {
         context.json("sample text");
     }
 
+    // create account
     private void addAccountHandler(Context ctx) {
         // get request information
         Account account = ctx.bodyAsClass(Account.class);
@@ -55,7 +59,8 @@ public class SocialMediaController {
         }
     }
 
-    private void loginAccountHandler (Context ctx) {
+    // login to account
+    private void loginAccountHandler(Context ctx) {
         // get request information
         Account account = ctx.bodyAsClass(Account.class);
         // call service method
@@ -69,12 +74,25 @@ public class SocialMediaController {
 
     }
 
-    private void getAccountByIdHandler (Context ctx) {
+    // get account by id
+    private void getAccountByIdHandler(Context ctx) {
         // get request information
         String idString = ctx.pathParam("account_id");
         int id = Integer.parseInt(idString);
         // call service method
         Account account = accountService.getAccountById(id);
+        // send result to client
+        if(account != null) {
+            ctx.json(account);
+        } else {
+            ctx.status(400);
+        }
+    }
+
+    // get all accounts
+    private void getAllAccountsHandler(Context ctx) {
+        // call service method
+        ArrayList<Account> account = accountService.getAllAccounts();
         // send result to client
         if(account != null) {
             ctx.json(account);
