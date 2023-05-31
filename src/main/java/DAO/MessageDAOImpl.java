@@ -97,17 +97,11 @@ public class MessageDAOImpl implements MessageDAO {
              // create statement
              String sql = "UPDATE message SET message_text = ? WHERE message_id = ?";
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-             ps.setString(2, messageText);
-             ps.setInt(4, id);
+             ps.setString(1, messageText);
+             ps.setInt(2, id);
  
              // execute statement
              ps.executeUpdate();
-             ResultSet rs = ps.getGeneratedKeys();
- 
-             // process results
-             if(rs.next()) {
-                 return new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
-             }
  
          } catch (SQLException e) {
              // handle exception

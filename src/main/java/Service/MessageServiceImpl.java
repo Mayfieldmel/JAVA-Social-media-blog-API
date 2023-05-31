@@ -62,8 +62,9 @@ public class MessageServiceImpl implements MessageService {
         if (messageText.isBlank() || Objects.isNull(message) || messageText.length() >= 255) { 
             return null;
         } else {
-            return messageDAO.updateMessage(id, messageText);
+            messageDAO.updateMessage(id, messageText);
         } 
+        return messageDAO.getMessageById(id);
        
     }
 

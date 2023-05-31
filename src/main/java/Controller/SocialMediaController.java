@@ -62,6 +62,7 @@ public class SocialMediaController {
 
     // create account
     private void addAccountHandler(Context ctx) {
+        
         // get request information
         Account account = ctx.bodyAsClass(Account.class);
         // call service method
@@ -176,11 +177,14 @@ public class SocialMediaController {
     // update message text
     private void updateMessageHandler(Context ctx) {
         // get request information
-        String messageText = ctx.body();
+        String messageText = ctx.body().split(":")[1].trim();
+        System.out.println(messageText);
         String idString = ctx.pathParam("message_id");
         int id = Integer.parseInt(idString);
+        System.out.println(id);
         // call service method
         Message message = messageService.updateMessage(id, messageText);
+        System.out.print("message: " + message);
         // send result to client
         if(message != null) {
             ctx.json(message);
