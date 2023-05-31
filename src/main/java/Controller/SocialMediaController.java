@@ -30,6 +30,7 @@ public class SocialMediaController {
         app.get("example-endpoint", this::exampleHandler);
         app.post("/", this::addAccountHandler);
         app.post("/login", this::loginAccountHandler);
+        app.post("/account/{account_id}", this::getAccountByIdHandler);
         return app;
     }
 
@@ -66,6 +67,20 @@ public class SocialMediaController {
             ctx.status(401);
         }
 
+    }
+
+    private void getAccountByIdHandler (Context ctx) {
+        // get request information
+        String idString = ctx.pathParam("account_id");
+        int id = Integer.parseInt(idString);
+        // call service method
+        Account account = accountService.getAccountById(id);
+        // send result to client
+        if(account != null) {
+            ctx.json(account);
+        } else {
+            ctx.status(400);
+        }
     }
 
 
