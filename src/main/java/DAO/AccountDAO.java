@@ -3,9 +3,12 @@ package DAO;
 import Model.Account;
 
 public interface AccountDAO {
-    // create
+    // Create
     public abstract Account addAccount(Account account);
 
-    // read/ LOGIN
+    // Read
+    // login
     public abstract Account getAccount(String username, String password);
+    // get account by id
+    public abstract Account getAccountById(int id);
 }
