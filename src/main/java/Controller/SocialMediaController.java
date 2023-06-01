@@ -1,7 +1,7 @@
 package Controller;
 
 import java.util.ArrayList;
-
+import java.util.Map;
 import Model.Account;
 import Model.Message;
 import Service.AccountService;
@@ -177,7 +177,8 @@ public class SocialMediaController {
     // update message text
     private void updateMessageHandler(Context ctx) {
         // get request information
-        String messageText = ctx.body().split(":")[1].trim();
+        Map<String, String> messageMap = ctx.bodyAsClass(Map.class);
+        String messageText = messageMap.get("message_text");
         System.out.println(messageText);
         String idString = ctx.pathParam("message_id");
         int id = Integer.parseInt(idString);
