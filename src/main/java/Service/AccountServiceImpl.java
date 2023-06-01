@@ -18,10 +18,10 @@ public class AccountServiceImpl implements AccountService {
     // create account
     @Override
     public Account addAccount(Account account) {
-        if(account.getUsername() != null && account.getPassword().length() >= 4){
-            return accountDAO.addAccount(account);
-        } else {
+        if(account.getUsername().isBlank() && account.getPassword().length() < 4){
             return null;
+        } else {
+            return accountDAO.addAccount(account);
         }
         
     }
