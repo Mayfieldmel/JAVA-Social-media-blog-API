@@ -37,7 +37,7 @@ public class SocialMediaController {
         app.get("example-endpoint", this::exampleHandler);
 
         // account handler paths
-        app.post("/", this::addAccountHandler);
+        app.post("/register", this::addAccountHandler);
         app.post("/login", this::loginAccountHandler);
         app.get("/accounts/{account_id}", this::getAccountByIdHandler);
         app.get("/accounts", this::getAllAccountsHandler);
