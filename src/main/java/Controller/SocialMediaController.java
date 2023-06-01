@@ -179,13 +179,10 @@ public class SocialMediaController {
         // get request information
         Map<String, String> messageMap = ctx.bodyAsClass(Map.class);
         String messageText = messageMap.get("message_text");
-        System.out.println(messageText);
         String idString = ctx.pathParam("message_id");
         int id = Integer.parseInt(idString);
-        System.out.println(id);
         // call service method
         Message message = messageService.updateMessage(id, messageText);
-        System.out.print("message: " + message);
         // send result to client
         if(message != null) {
             ctx.json(message);

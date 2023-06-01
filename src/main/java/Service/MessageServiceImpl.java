@@ -59,7 +59,6 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Message updateMessage(int id, String messageText) {
         Message message = messageDAO.getMessageById(id);
-        System.out.print("messageServiceImpl message = " + message);
         if (messageText.isBlank() || Objects.isNull(message) || messageText.length() >= 255) { 
             return null;
         } else {
