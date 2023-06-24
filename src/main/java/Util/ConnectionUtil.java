@@ -8,31 +8,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- * The ConnectionUtil class will be utilized to create an active connection to our database. This class utilizes the singleton design pattern.
- * We will be utilizing an in-memory called h2database for the sql demos.
- *
- * DO NOT CHANGE ANYTHING IN THIS CLASS
- */
+
 public class ConnectionUtil {
 
-    /**
-     * url will represent our connection string. Since this is an in-memory db, we will represent a file location to store the data
-     */
     private static String url = "jdbc:h2:./h2/db";
-    /**
-     * Default username for connecting to h2
-     */
     private static String username = "sa";
-    /**
-     * Default password for connecting to h2
-     */
     private static String password = "sa";
-    /**
-     * a static object which represents the connection to h2. Because it is static, any DAO interacting
-     * with this connection object is referring to the same object.
-     */
+   
     private static Connection connection = null;
+
     /**
      * @return an active connection to the database and set up the database tables if this is the first time the
      * Connection has been established
